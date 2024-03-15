@@ -41,6 +41,22 @@ app.get('/signals/:id', async (req, res) => {
   }
 });
 
+app.put('/signals/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const signal = await Signal.findByIdAndUpdate(id, req.body);
+    if (!signal) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any signal with ID ${id}` });
+    }
+    const updatedSignal = await Signal.findById(id);
+    res.status(200).json(updatedSignal);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(MONGO_URL)
   .then(() => {
