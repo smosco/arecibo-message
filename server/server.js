@@ -22,6 +22,25 @@ app.post('/signals', async (req, res) => {
   }
 });
 
+app.get('/signals', async (req, res) => {
+  try {
+    const signals = await Signal.find({});
+    res.status(200).json(signals);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.get('/signals/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const signal = await Signal.findById(id);
+    res.status(200).json(signal);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 mongoose
   .connect(MONGO_URL)
   .then(() => {
