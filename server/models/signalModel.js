@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const signalSchema = mongoose.Schema(
   {
     binaryCode: {
-      type: Number,
+      type: String,
       required: true,
     },
     description: {
