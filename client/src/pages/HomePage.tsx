@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../scss/HomePage.scss';
 
 interface Signal {
@@ -13,7 +14,8 @@ interface Signal {
 
 const HomePage = () => {
   const [signals, setSignals] = useState<Signal[]>([]);
-  const [grids, setGrids] = useState<number[][][]>([]);
+  const [grids, setGrids] = useState<{ grid: number[][]; title: string }[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 백엔드에서 여러 개의 문자열로 된 이진수를 가져오는 API 호출
@@ -34,14 +36,19 @@ const HomePage = () => {
 
   useEffect(() => {
     // 객체들의 배열을 그리드들로 변환
-    const convertToGrids = (signals: Signal[]): number[][][] => {
+    const convertToGrids = (
+      signals: Signal[],
+    ): { grid: number[][]; title: string }[] => {
       return signals.map(signal => {
         const binaryMessage: string = signal.binaryCode;
         const rows = binaryMessage.match(/.{1,23}/g); // 73개씩 나누어 행 배열 생성
         if (rows) {
-          return rows.map(row => row.split('').map(cell => parseInt(cell, 10)));
+          const grid = rows.map(row =>
+            row.split('').map(cell => parseInt(cell, 10)),
+          );
+          return { grid, title: signal.description };
         }
-        return [];
+        return { grid: [], title: '' };
       });
     };
 
@@ -56,7 +63,8 @@ const HomePage = () => {
       <ul>
         {grids.map((grid, index) => (
           <li key={index} className="grid-container">
-            {grid.map((row, rowIndex) => (
+            <h2>{grid.title}</h2>
+            {grid.grid.map((row, rowIndex) => (
               <div key={rowIndex} className="row">
                 {row.map((cell, colIndex) => (
                   <button
@@ -69,6 +77,9 @@ const HomePage = () => {
           </li>
         ))}
       </ul>
+      <button onClick={() => navigate('/create')}>
+        아레시보 메시지 만들기
+      </button>
     </div>
   );
 };
