@@ -1,0 +1,19 @@
+# 빌드된 파일은 포맷팅에서 제외합니다.
+build/
+dist/
+out/
+output/
+
+# 이미지 파일은 포맷팅에서 제외합니다.
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+
+# 외부 라이브러리 파일은 포맷팅에서 제외합니다.
+node_modules/
+
+# 설정 파일은 포맷팅에서 제외합니다.
+.eslintrc
+.prettierrc
