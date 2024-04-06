@@ -42,6 +42,7 @@ const CreatePage = () => {
 
   return (
     <div className="app">
+      <div>테스트중</div>
       <h1>Arecibo Message</h1>
       <div className="grid-container">
         <input
